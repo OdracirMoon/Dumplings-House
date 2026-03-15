@@ -256,7 +256,7 @@
             <h3 id="modalTitle">Completa tu pedido</h3>
             <form id="pedidoForm">
                 <label for="nombre">Nombre completo</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="cliente" required>
 
                 <label for="telefono">Número de teléfono</label>
                 <input type="tel" id="telefono" name="telefono" required>
@@ -273,7 +273,7 @@
                 <input type="number" id="salsaMacha" name="salsaMacha" min="0" value="0" required>
 
                 <label for="tipoEntrega">Tipo de Entrega</label>
-                <select id="tipoEntrega" name="tipoEntrega" required>
+                <select id="tipoEntrega" name="entrega" required>
                     <option value="" disabled selected>Selecciona una opción</option>
                     <option value="A domicilio">A domicilio</option>
                     <option value="Pasar a recoger">Pasar a recoger</option>
@@ -379,7 +379,7 @@
             const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Pedido: ${cantidad}x Paquete de ${detallePaquete}${lineaSalsas}\n👤 Nombre: ${nombre}${lineaDireccion}\n📱 Teléfono: ${telefono}\n🚚 Entrega: ${entrega}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!`;
             const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
-            formData.append('paquete', paqueteSeleccionado);
+            formData.append('paquete', detallePaquete);
             formData.append('tipoFormulario', 'venta');
             formData.append('estado', 'Pendiente');
 
