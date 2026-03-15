@@ -154,6 +154,9 @@
             border-radius: 0.7rem;
             font-size: 1rem;
         }
+        .is-hidden {
+            display: none;
+        }
         .selected-pack {
             background: #fff7f0;
             border: 1px dashed #ffb347;
@@ -249,8 +252,17 @@
                 <label for="telefono">Número de teléfono</label>
                 <input type="tel" id="telefono" name="telefono" required>
 
-                <label for="direccion">Dirección de entrega</label>
-                <input type="text" id="direccion" name="direccion" required>
+                <label for="tipoEntrega">Tipo de Entrega</label>
+                <select id="tipoEntrega" name="tipoEntrega" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="A domicilio">A domicilio</option>
+                    <option value="Pasar a recoger">Pasar a recoger</option>
+                </select>
+
+                <div id="direccionGroup">
+                    <label for="direccion">Dirección de entrega</label>
+                    <input type="text" id="direccion" name="direccion" required>
+                </div>
 
                 <label for="pago">Método de pago</label>
                 <select id="pago" name="pago" required>
@@ -281,7 +293,20 @@
         const paqueteSeleccionadoEl = document.getElementById('paqueteSeleccionado');
         const cerrarModalBtn = document.getElementById('cerrarModalBtn');
         const botonesAbrir = document.querySelectorAll('.open-modal-btn');
+        const tipoEntrega = document.getElementById('tipoEntrega');
+        const direccionGroup = document.getElementById('direccionGroup');
+        const direccionInput = document.getElementById('direccion');
         let paqueteSeleccionado = '';
+
+        function actualizarCampoDireccion() {
+            const recoger = tipoEntrega.value === 'Pasar a recoger';
+            direccionGroup.classList.toggle('is-hidden', recoger);
+            direccionInput.disabled = recoger;
+            direccionInput.required = !recoger;
+            if (recoger) {
+                direccionInput.value = '';
+            }
+        }
 
         function abrirModal(paquete) {
             paqueteSeleccionado = paquete;
@@ -296,11 +321,14 @@
             pedidoForm.reset();
             paqueteSeleccionadoEl.textContent = '-';
             paqueteSeleccionado = '';
+            actualizarCampoDireccion();
         }
 
         botonesAbrir.forEach((btn) => {
             btn.addEventListener('click', () => abrirModal(btn.dataset.paquete));
         });
+
+        tipoEntrega.addEventListener('change', actualizarCampoDireccion);
 
         cerrarModalBtn.addEventListener('click', cerrarModal);
         modal.addEventListener('click', (event) => {
@@ -315,14 +343,19 @@
             const nombre = document.getElementById('nombre').value.trim();
             const telefono = document.getElementById('telefono').value.trim();
             const direccion = document.getElementById('direccion').value.trim();
+            const entrega = tipoEntrega.value;
             const pago = document.getElementById('pago').value;
 
-            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Paquete: ${paqueteSeleccionado}\n👤 Nombre: ${nombre}\n📍 Dirección: ${direccion}\n📱 Teléfono: ${telefono}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!`;
+            const lineaDireccion = entrega === 'A domicilio' ? `\n📍 Dirección: ${direccion}` : '';
+            const notaEnvio = entrega === 'A domicilio' ? '\n(Quedo en espera de que me confirmen el costo de envío a mi dirección)' : '';
+            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Paquete: ${paqueteSeleccionado}\n👤 Nombre: ${nombre}${lineaDireccion}\n📱 Teléfono: ${telefono}\n🚚 Entrega: ${entrega}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!${notaEnvio}`;
             const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
             window.open(url, '_blank');
             cerrarModal();
         });
+
+        actualizarCampoDireccion();
     </script>
 </body>
 </html>
