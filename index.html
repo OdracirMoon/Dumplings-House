@@ -307,6 +307,7 @@
     </footer>
 
     <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby2HCT72LiO3bX7zfTSn4OqqBq31GF60wuJ9TcVfBa_OiTW5BdSrIxVzvYXZCfNdi5usg/exec';
         const whatsappNumber = '526391108546';
         const modal = document.getElementById('pedidoModal');
         const pedidoForm = document.getElementById('pedidoForm');
@@ -369,17 +370,27 @@
             const entrega = tipoEntrega.value;
             const pago = document.getElementById('pago').value;
             const detallePaquete = paqueteSeleccionado.replace(/^Paquete\s*/i, '');
+            const formData = new FormData(pedidoForm);
 
             const lineaDireccion = entrega === 'A domicilio' ? `\n📍 Dirección: ${direccion}` : '';
             const lineaSalsas = (salsaAjonjoli > 0 || salsaMacha > 0)
                 ? `\n🥢 Salsas Extra: ${salsaAjonjoli} Ajonjolí, ${salsaMacha} Macha`
                 : '';
-            const notaEnvio = entrega === 'A domicilio' ? '\n(Quedo en espera de que me confirmen el costo de envío a mi dirección)' : '';
-            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Pedido: ${cantidad}x Paquete de ${detallePaquete}${lineaSalsas}\n👤 Nombre: ${nombre}${lineaDireccion}\n📱 Teléfono: ${telefono}\n🚚 Entrega: ${entrega}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!${notaEnvio}`;
+            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Pedido: ${cantidad}x Paquete de ${detallePaquete}${lineaSalsas}\n👤 Nombre: ${nombre}${lineaDireccion}\n📱 Teléfono: ${telefono}\n🚚 Entrega: ${entrega}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!`;
             const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
-            window.open(url, '_blank');
-            cerrarModal();
+            formData.append('paquete', paqueteSeleccionado);
+            formData.append('tipoFormulario', 'venta');
+            formData.append('estado', 'Pendiente');
+
+            fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+                .catch((error) => {
+                    console.error('Error al registrar en Google Sheets:', error);
+                })
+                .finally(() => {
+                    window.open(url, '_blank');
+                    cerrarModal();
+                });
         });
 
         actualizarCampoDireccion();
