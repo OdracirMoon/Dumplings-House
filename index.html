@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dumplings en Casa</title>
+    <style>
+        :root {
+            --main-orange: #ff7043;
+            --main-yellow: #ffb347;
+            --main-red: #e64a19;
+            --card-bg: #fff7f0;
+            --shadow: 0 4px 24px rgba(255, 112, 67, 0.15);
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--main-yellow) 0%, var(--main-orange) 100%);
+            min-height: 100vh;
+            color: #4e260e;
+        }
+        header {
+            text-align: center;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+        header h1 {
+            color: var(--main-red);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            color: var(--main-orange);
+            font-size: 1.1rem;
+            margin-top: 0;
+        }
+        .menu-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 1.2rem;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 350px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(255, 112, 67, 0.22);
+        }
+        .card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            background: #ffe0b2;
+        }
+        .card h2 {
+            color: var(--main-red);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .card p {
+            color: #a65b2a;
+            font-size: 1rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .cta-btn {
+            background: linear-gradient(90deg, var(--main-orange) 60%, var(--main-yellow) 100%);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 0.8rem;
+            padding: 0.9rem 1.2rem;
+            box-shadow: 0 4px 16px rgba(255, 112, 67, 0.18);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-btn:hover {
+            background: linear-gradient(90deg, var(--main-red) 60%, var(--main-yellow) 100%);
+            transform: scale(1.05);
+        }
+        footer {
+            background: var(--main-orange);
+            color: #fff;
+            text-align: center;
+            padding: 1.2rem 1rem 1rem 1rem;
+            border-top-left-radius: 1.2rem;
+            border-top-right-radius: 1.2rem;
+            margin-top: 2rem;
+            font-size: 1rem;
+        }
+        @media (max-width: 600px) {
+            .menu-section {
+                padding: 0.5rem;
+            }
+            .card {
+                padding: 1rem 0.5rem;
+            }
+            header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dumplings en Casa</h1>
+        <p>Auténtico sabor asiático, listos para disfrutar</p>
+    </header>
+    <section class="menu-section">
+        <div class="card">
+            <img src="dump6.png" alt="Paquete 6 piezas">
+            <h2>Paquete 6 piezas</h2>
+            <p>Perfecto para una entrada o para compartir. Dumplings frescos, rellenos jugosos y cocidos al vapor, acompañados de salsa especial.</p>
+            <a class="cta-btn" href="https://wa.me/526391108546?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20pedir%20un%20paquete%20de%206%20piezas" target="_blank">Comprar por WhatsApp</a>
+        </div>
+        <div class="card">
+            <img src="dump8.png" alt="Paquete 8 piezas">
+            <h2>Paquete 8 piezas</h2>
+            <p>Ideal para una comida ligera o para dos personas. Disfruta el sabor auténtico y la textura perfecta de nuestros dumplings caseros.</p>
+            <a class="cta-btn" href="https://wa.me/526391108546?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20pedir%20un%20paquete%20de%208%20piezas" target="_blank">Comprar por WhatsApp</a>
+        </div>
+        <div class="card">
+            <img src="dump12.png" alt="Paquete 12 piezas">
+            <h2>Paquete 12 piezas</h2>
+            <p>La opción perfecta para compartir en familia o con amigos. Más dumplings, más felicidad, siempre frescos y deliciosos.</p>
+            <a class="cta-btn" href="https://wa.me/526391108546?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20pedir%20un%20paquete%20de%2012%20piezas" target="_blank">Comprar por WhatsApp</a>
+        </div>
+    </section>
+    <footer>
+        <strong>Horarios:</strong> Lunes a Sábado, 2:00 pm - 8:00 pm<br>
+        <strong>Envíos:</strong> Recoger en casa o a domicilio (zona centro y sur)
+    </footer>
+</body>
+</html>
