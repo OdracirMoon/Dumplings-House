@@ -25,9 +25,30 @@
 		h1 {
 			color: #e64a19;
 			text-align: center;
-			margin-bottom: 2rem;
+			margin-bottom: 1rem;
 			font-size: 1.6rem;
 			letter-spacing: 1px;
+		}
+		.tabs {
+			display: flex;
+			gap: 0.5rem;
+			margin-bottom: 1.2rem;
+		}
+		.tab-btn {
+			flex: 1;
+			padding: 0.75rem;
+			border: 1px solid #ffb347;
+			background: #fff7f0;
+			color: #e64a19;
+			font-weight: 600;
+			border-radius: 0.8rem;
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+		.tab-btn.active {
+			background: linear-gradient(90deg, #ff7043 60%, #ffb347 100%);
+			color: #fff;
+			border-color: #ff7043;
 		}
 		label {
 			display: block;
@@ -68,6 +89,9 @@
 			background: linear-gradient(90deg, #e64a19 60%, #ffb347 100%);
 			transform: scale(1.03);
 		}
+		.hidden {
+			display: none;
+		}
 		@media (max-width: 500px) {
 			.container {
 				padding: 1rem 0.5rem;
@@ -82,7 +106,13 @@
 <body>
 	<div class="container">
 		<h1>Registro de Ventas - Dumplings</h1>
+		<div class="tabs">
+			<button type="button" class="tab-btn active" id="tabVenta">Registrar Venta</button>
+			<button type="button" class="tab-btn" id="tabGasto">Registrar Gasto</button>
+		</div>
+
 		<form id="ventaForm" autocomplete="off">
+			<input type="hidden" name="tipoFormulario" value="venta">
 			<label for="cliente">Nombre del Cliente</label>
 			<input type="text" id="cliente" name="cliente" required placeholder="Ej: Juan Pérez">
 
@@ -110,34 +140,81 @@
 
 			<button type="submit" class="btn">Registrar Venta</button>
 		</form>
+
+		<form id="gastoForm" autocomplete="off" class="hidden">
+			<input type="hidden" name="tipoFormulario" value="gasto">
+
+			<label for="concepto">Concepto</label>
+			<select id="concepto" name="concepto" required>
+				<option value="">Selecciona...</option>
+				<option value="Harina">Harina</option>
+				<option value="Carne">Carne</option>
+				<option value="Verduras">Verduras</option>
+				<option value="Empaques">Empaques</option>
+				<option value="Gas">Gas</option>
+				<option value="Otro">Otro</option>
+			</select>
+
+			<label for="monto">Monto</label>
+			<input type="number" id="monto" name="monto" required placeholder="Ej. 250" min="0" step="0.01">
+
+			<button type="submit" class="btn">Registrar Gasto</button>
+		</form>
 	</div>
 	<script>
-		// Pega tu URL de Google Apps Script entre las comillas de abajo:
-		const scriptURL = 'https://script.google.com/macros/s/AKfycbwmsaSBhW5qDXM5AZ_-jDMTdDSi7CeXPitDT7KCxEh_5V6Zexyf_ixBPqeaaeZT_z0hew/exec';
-		const form = document.getElementById('ventaForm');
-		const btn = document.querySelector('.btn');
+		const scriptURL = 'https://script.google.com/macros/s/AKfycbwCd_HZj53Gu_85WR20WYtkoB3Koc6Ye7cx3ZgvT9kIjgb6qAiTuCJZuAWX07BrQnNMOg/exec';
+		const tabVenta = document.getElementById('tabVenta');
+		const tabGasto = document.getElementById('tabGasto');
+		const ventaForm = document.getElementById('ventaForm');
+		const gastoForm = document.getElementById('gastoForm');
 
-		form.addEventListener('submit', e => {
-			e.preventDefault();
-			// Cambiamos el texto del botón para que sepa que está cargando
+		function activarTab(tipo) {
+			if (tipo === 'venta') {
+				tabVenta.classList.add('active');
+				tabGasto.classList.remove('active');
+				ventaForm.classList.remove('hidden');
+				gastoForm.classList.add('hidden');
+			} else {
+				tabGasto.classList.add('active');
+				tabVenta.classList.remove('active');
+				gastoForm.classList.remove('hidden');
+				ventaForm.classList.add('hidden');
+			}
+		}
+
+		function enviarFormulario(formulario, textoBotonOriginal, alertaExito) {
+			const btn = formulario.querySelector('.btn');
 			btn.innerHTML = 'Registrando... 🥟';
 			btn.disabled = true;
 
-			let formData = new FormData(form);
+			const formData = new FormData(formulario);
 
 			fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
-				.then(response => {
-					alert('¡Venta registrada con éxito!');
-					form.reset();
-					btn.innerHTML = 'Registrar Venta';
+				.then(() => {
+					alert(alertaExito);
+					formulario.reset();
+					btn.innerHTML = textoBotonOriginal;
 					btn.disabled = false;
 				})
 				.catch(error => {
 					console.error('Error!', error.message);
-					alert('Hubo un error al registrar la venta. Intenta de nuevo.');
-					btn.innerHTML = 'Registrar Venta';
+					alert('Hubo un error al registrar. Intenta de nuevo.');
+					btn.innerHTML = textoBotonOriginal;
 					btn.disabled = false;
 				});
+		}
+
+		tabVenta.addEventListener('click', () => activarTab('venta'));
+		tabGasto.addEventListener('click', () => activarTab('gasto'));
+
+		ventaForm.addEventListener('submit', e => {
+			e.preventDefault();
+			enviarFormulario(ventaForm, 'Registrar Venta', '¡Venta registrada con éxito!');
+		});
+
+		gastoForm.addEventListener('submit', e => {
+			e.preventDefault();
+			enviarFormulario(gastoForm, 'Registrar Gasto', '¡Gasto registrado con éxito!');
 		});
 	</script>
 </body>
