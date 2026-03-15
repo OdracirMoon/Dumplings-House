@@ -124,6 +124,9 @@
 				<option value="12 piezas">12 piezas</option>
 			</select>
 
+			<label for="cantidad">Cantidad</label>
+			<input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+
 			<label for="entrega">Tipo de Entrega</label>
 			<select id="entrega" name="entrega" required>
 				<option value="">Selecciona...</option>
@@ -165,7 +168,7 @@
 		</form>
 	</div>
 	<script>
-		const scriptURL = 'https://script.google.com/macros/s/AKfycbwCd_HZj53Gu_85WR20WYtkoB3Koc6Ye7cx3ZgvT9kIjgb6qAiTuCJZuAWX07BrQnNMOg/exec';
+		const scriptURL = 'https://script.google.com/macros/s/AKfycbz-V7m4Y_i8ZHyCV91W3QjxWc-Jgn4cnijwnTEgA4B8yyStTx4ix1VPgYQcb2HsZfa8hQ/exec';
 		const tabVenta = document.getElementById('tabVenta');
 		const tabGasto = document.getElementById('tabGasto');
 		const ventaForm = document.getElementById('ventaForm');
