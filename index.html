@@ -154,6 +154,15 @@
             border-radius: 0.7rem;
             font-size: 1rem;
         }
+        .modal-note {
+            margin: 0 0 1rem;
+            font-size: 0.85rem;
+            color: #a65b2a;
+            background: #fff7f0;
+            border: 1px solid #ffd9c7;
+            border-radius: 0.6rem;
+            padding: 0.6rem 0.7rem;
+        }
         .is-hidden {
             display: none;
         }
@@ -219,7 +228,7 @@
         <div class="card">
             <img src="dump6.png" alt="Paquete 6 piezas">
             <h2>Paquete 6 piezas</h2>
-            <div class="price">$100 MXN</div>
+            <div class="price">$100</div>
             <div class="shipping-note">(+ costo de envío)</div>
             <p>Perfecto para una entrada o para compartir. Dumplings frescos, rellenos jugosos y cocidos al vapor, acompañados de salsa especial.</p>
             <button class="cta-btn open-modal-btn" type="button" data-paquete="Paquete 6 piezas">Comprar por WhatsApp</button>
@@ -227,7 +236,7 @@
         <div class="card">
             <img src="dump8.png" alt="Paquete 8 piezas">
             <h2>Paquete 8 piezas</h2>
-            <div class="price">$150 MXN</div>
+            <div class="price">$150</div>
             <div class="shipping-note">(+ costo de envío)</div>
             <p>Ideal para una comida ligera o para dos personas. Disfruta el sabor auténtico y la textura perfecta de nuestros dumplings caseros.</p>
             <button class="cta-btn open-modal-btn" type="button" data-paquete="Paquete 8 piezas">Comprar por WhatsApp</button>
@@ -235,7 +244,7 @@
         <div class="card">
             <img src="dump12.png" alt="Paquete 12 piezas">
             <h2>Paquete 12 piezas</h2>
-            <div class="price">$180 MXN</div>
+            <div class="price">$180</div>
             <div class="shipping-note">(+ costo de envío)</div>
             <p>La opción perfecta para compartir en familia o con amigos. Más dumplings, más felicidad, siempre frescos y deliciosos.</p>
             <button class="cta-btn open-modal-btn" type="button" data-paquete="Paquete 12 piezas">Comprar por WhatsApp</button>
@@ -254,6 +263,14 @@
 
                 <label for="cantidad">Cantidad de paquetes</label>
                 <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+
+                <p class="modal-note">Nota: Los paquetes de 6 y 8 incluyen 1 salsa de ajonjolí y 1 macha. El de 12 incluye 2 de cada una.</p>
+
+                <label for="salsaAjonjoli">Salsas de Ajonjolí extra ($15 c/u)</label>
+                <input type="number" id="salsaAjonjoli" name="salsaAjonjoli" min="0" value="0" required>
+
+                <label for="salsaMacha">Salsas Macha extra ($15 c/u)</label>
+                <input type="number" id="salsaMacha" name="salsaMacha" min="0" value="0" required>
 
                 <label for="tipoEntrega">Tipo de Entrega</label>
                 <select id="tipoEntrega" name="tipoEntrega" required>
@@ -346,14 +363,19 @@
             const nombre = document.getElementById('nombre').value.trim();
             const telefono = document.getElementById('telefono').value.trim();
             const cantidad = document.getElementById('cantidad').value;
+            const salsaAjonjoli = parseInt(document.getElementById('salsaAjonjoli').value, 10) || 0;
+            const salsaMacha = parseInt(document.getElementById('salsaMacha').value, 10) || 0;
             const direccion = document.getElementById('direccion').value.trim();
             const entrega = tipoEntrega.value;
             const pago = document.getElementById('pago').value;
             const detallePaquete = paqueteSeleccionado.replace(/^Paquete\s*/i, '');
 
             const lineaDireccion = entrega === 'A domicilio' ? `\n📍 Dirección: ${direccion}` : '';
+            const lineaSalsas = (salsaAjonjoli > 0 || salsaMacha > 0)
+                ? `\n🥢 Salsas Extra: ${salsaAjonjoli} Ajonjolí, ${salsaMacha} Macha`
+                : '';
             const notaEnvio = entrega === 'A domicilio' ? '\n(Quedo en espera de que me confirmen el costo de envío a mi dirección)' : '';
-            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Pedido: ${cantidad}x Paquete de ${detallePaquete}\n👤 Nombre: ${nombre}${lineaDireccion}\n📱 Teléfono: ${telefono}\n🚚 Entrega: ${entrega}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!${notaEnvio}`;
+            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Pedido: ${cantidad}x Paquete de ${detallePaquete}${lineaSalsas}\n👤 Nombre: ${nombre}${lineaDireccion}\n📱 Teléfono: ${telefono}\n🚚 Entrega: ${entrega}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!${notaEnvio}`;
             const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
 
             window.open(url, '_blank');
