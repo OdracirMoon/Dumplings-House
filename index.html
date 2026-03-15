@@ -70,7 +70,18 @@
         .card h2 {
             color: var(--main-red);
             font-size: 1.3rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
+        }
+        .price {
+            color: var(--main-red);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+        .shipping-note {
+            color: #a65b2a;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
         }
         .card p {
             color: #a65b2a;
@@ -95,6 +106,83 @@
         .cta-btn:hover {
             background: linear-gradient(90deg, var(--main-red) 60%, var(--main-yellow) 100%);
             transform: scale(1.05);
+        }
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 999;
+        }
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            box-shadow: 0 10px 32px rgba(0, 0, 0, 0.2);
+        }
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--main-red);
+            text-align: center;
+        }
+        .modal-content label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #a65b2a;
+            font-weight: 600;
+        }
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border: 1px solid #ffd1b5;
+            border-radius: 0.7rem;
+            font-size: 1rem;
+        }
+        .selected-pack {
+            background: #fff7f0;
+            border: 1px dashed #ffb347;
+            color: #7a3a16;
+            border-radius: 0.7rem;
+            padding: 0.7rem;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 0.7rem;
+        }
+        .modal-actions .cta-btn {
+            flex: 1;
+            text-align: center;
+        }
+        .secondary-btn {
+            background: #ffe0d1;
+            color: #7a3a16;
+            border: none;
+            border-radius: 0.8rem;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .secondary-btn:hover {
+            background: #ffd1b8;
         }
         footer {
             background: var(--main-orange);
@@ -128,25 +216,113 @@
         <div class="card">
             <img src="dump6.png" alt="Paquete 6 piezas">
             <h2>Paquete 6 piezas</h2>
+            <div class="price">$100 MXN</div>
+            <div class="shipping-note">(+ costo de envío)</div>
             <p>Perfecto para una entrada o para compartir. Dumplings frescos, rellenos jugosos y cocidos al vapor, acompañados de salsa especial.</p>
-            <a class="cta-btn" href="https://wa.me/526391108546?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20pedir%20un%20paquete%20de%206%20piezas" target="_blank">Comprar por WhatsApp</a>
+            <button class="cta-btn open-modal-btn" type="button" data-paquete="Paquete 6 piezas">Comprar por WhatsApp</button>
         </div>
         <div class="card">
             <img src="dump8.png" alt="Paquete 8 piezas">
             <h2>Paquete 8 piezas</h2>
+            <div class="price">$150 MXN</div>
+            <div class="shipping-note">(+ costo de envío)</div>
             <p>Ideal para una comida ligera o para dos personas. Disfruta el sabor auténtico y la textura perfecta de nuestros dumplings caseros.</p>
-            <a class="cta-btn" href="https://wa.me/526391108546?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20pedir%20un%20paquete%20de%208%20piezas" target="_blank">Comprar por WhatsApp</a>
+            <button class="cta-btn open-modal-btn" type="button" data-paquete="Paquete 8 piezas">Comprar por WhatsApp</button>
         </div>
         <div class="card">
             <img src="dump12.png" alt="Paquete 12 piezas">
             <h2>Paquete 12 piezas</h2>
+            <div class="price">$180 MXN</div>
+            <div class="shipping-note">(+ costo de envío)</div>
             <p>La opción perfecta para compartir en familia o con amigos. Más dumplings, más felicidad, siempre frescos y deliciosos.</p>
-            <a class="cta-btn" href="https://wa.me/526391108546?text=%C2%A1Hola!%20Me%20gustar%C3%ADa%20pedir%20un%20paquete%20de%2012%20piezas" target="_blank">Comprar por WhatsApp</a>
+            <button class="cta-btn open-modal-btn" type="button" data-paquete="Paquete 12 piezas">Comprar por WhatsApp</button>
         </div>
     </section>
+
+    <div class="modal" id="pedidoModal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <h3 id="modalTitle">Completa tu pedido</h3>
+            <form id="pedidoForm">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="telefono">Número de teléfono</label>
+                <input type="tel" id="telefono" name="telefono" required>
+
+                <label for="direccion">Dirección de entrega</label>
+                <input type="text" id="direccion" name="direccion" required>
+
+                <label for="pago">Método de pago</label>
+                <select id="pago" name="pago" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+
+                <div class="selected-pack">Paquete seleccionado: <strong id="paqueteSeleccionado">-</strong></div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="cta-btn">Confirmar Pedido</button>
+                    <button type="button" class="secondary-btn" id="cerrarModalBtn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <strong>Horarios:</strong> Lunes a Sábado, 2:00 pm - 8:00 pm<br>
         <strong>Envíos:</strong> Recoger en casa o a domicilio (zona centro y sur)
     </footer>
+
+    <script>
+        const whatsappNumber = '526391108546';
+        const modal = document.getElementById('pedidoModal');
+        const pedidoForm = document.getElementById('pedidoForm');
+        const paqueteSeleccionadoEl = document.getElementById('paqueteSeleccionado');
+        const cerrarModalBtn = document.getElementById('cerrarModalBtn');
+        const botonesAbrir = document.querySelectorAll('.open-modal-btn');
+        let paqueteSeleccionado = '';
+
+        function abrirModal(paquete) {
+            paqueteSeleccionado = paquete;
+            paqueteSeleccionadoEl.textContent = paquete;
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+        }
+
+        function cerrarModal() {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            pedidoForm.reset();
+            paqueteSeleccionadoEl.textContent = '-';
+            paqueteSeleccionado = '';
+        }
+
+        botonesAbrir.forEach((btn) => {
+            btn.addEventListener('click', () => abrirModal(btn.dataset.paquete));
+        });
+
+        cerrarModalBtn.addEventListener('click', cerrarModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                cerrarModal();
+            }
+        });
+
+        pedidoForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const direccion = document.getElementById('direccion').value.trim();
+            const pago = document.getElementById('pago').value;
+
+            const mensaje = `¡Hola! Quiero hacer un pedido:\n📦 Paquete: ${paqueteSeleccionado}\n👤 Nombre: ${nombre}\n📍 Dirección: ${direccion}\n📱 Teléfono: ${telefono}\n💵 Pago: ${pago}\n\nQuedo en espera de la confirmación, el costo del envío y el tiempo de entrega. ¡Gracias!`;
+            const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(mensaje)}`;
+
+            window.open(url, '_blank');
+            cerrarModal();
+        });
+    </script>
 </body>
 </html>
