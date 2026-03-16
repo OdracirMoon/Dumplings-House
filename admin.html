@@ -137,8 +137,13 @@
 			<select id="entrega" name="entrega" required>
 				<option value="">Selecciona...</option>
 				<option value="A domicilio">A domicilio</option>
-				<option value="Recoger en casa">Recoger en casa</option>
+				<option value="Pasar a recoger">Pasar a recoger</option>
 			</select>
+
+			<div id="direccionGroup" class="hidden">
+				<label for="direccion">Dirección de entrega</label>
+				<input type="text" id="direccion" name="direccion">
+			</div>
 
 			<label for="pago">Método de Pago</label>
 			<select id="pago" name="pago" required>
@@ -174,11 +179,14 @@
 		</form>
 	</div>
 	<script>
-		const scriptURL = 'https://script.google.com/macros/s/AKfycbzgJPRzHTC6ib8Qz06C66up3Ir2mJ9i_o5ksmMt4aAnKZzxzNda1bnPvJxDv615n5fy2g/exec';
+		const scriptURL = 'https://script.google.com/macros/s/AKfycbw6jvdtcvmhe-mRPL5kuRfbmhYQb-RXAZ7GzPYtXwNJXLFkRUlyV7vtTS1Rnu5r18sTmA/exec';
 		const tabVenta = document.getElementById('tabVenta');
 		const tabGasto = document.getElementById('tabGasto');
 		const ventaForm = document.getElementById('ventaForm');
 		const gastoForm = document.getElementById('gastoForm');
+		const entregaSelect = document.getElementById('entrega');
+		const direccionGroup = document.getElementById('direccionGroup');
+		const direccionInput = document.getElementById('direccion');
 
 		function activarTab(tipo) {
 			if (tipo === 'venta') {
@@ -201,8 +209,21 @@
 
 			const formData = new FormData(formulario);
 
+	function toggleDireccionGroup() {
+		const esDomicilio = entregaSelect.value === 'A domicilio';
+		if (esDomicilio) {
+			direccionGroup.classList.remove('hidden');
+			direccionInput.required = true;
+		} else {
+			direccionGroup.classList.add('hidden');
+			direccionInput.required = false;
+			direccionInput.value = '';
+		}
+	}
+
 			fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
 				.then(() => {
+	entregaSelect.addEventListener('change', toggleDireccionGroup);
 					alert(alertaExito);
 					formulario.reset();
 					btn.innerHTML = textoBotonOriginal;
@@ -228,6 +249,8 @@
 			e.preventDefault();
 			enviarFormulario(gastoForm, 'Registrar Gasto', '¡Gasto registrado con éxito!');
 		});
+
+		toggleDireccionGroup();
 	</script>
 </body>
 </html>
