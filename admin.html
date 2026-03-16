@@ -188,6 +188,7 @@
 		const direccionGroup = document.getElementById('direccionGroup');
 		const direccionInput = document.getElementById('direccion');
 
+		// 1. Función para cambiar entre Ventas y Gastos
 		function activarTab(tipo) {
 			if (tipo === 'venta') {
 				tabVenta.classList.add('active');
@@ -202,6 +203,20 @@
 			}
 		}
 
+		// 2. Función para mostrar/ocultar la dirección
+		function toggleDireccionGroup() {
+			const esDomicilio = entregaSelect.value === 'A domicilio';
+			if (esDomicilio) {
+				direccionGroup.classList.remove('hidden');
+				direccionInput.required = true;
+			} else {
+				direccionGroup.classList.add('hidden');
+				direccionInput.required = false;
+				direccionInput.value = '';
+			}
+		}
+
+		// 3. Función para mandar los datos a Google Sheets
 		function enviarFormulario(formulario, textoBotonOriginal, alertaExito) {
 			const btn = formulario.querySelector('.btn');
 			btn.innerHTML = 'Registrando... 🥟';
@@ -209,25 +224,13 @@
 
 			const formData = new FormData(formulario);
 
-	function toggleDireccionGroup() {
-		const esDomicilio = entregaSelect.value === 'A domicilio';
-		if (esDomicilio) {
-			direccionGroup.classList.remove('hidden');
-			direccionInput.required = true;
-		} else {
-			direccionGroup.classList.add('hidden');
-			direccionInput.required = false;
-			direccionInput.value = '';
-		}
-	}
-
 			fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
 				.then(() => {
-	entregaSelect.addEventListener('change', toggleDireccionGroup);
 					alert(alertaExito);
 					formulario.reset();
 					btn.innerHTML = textoBotonOriginal;
 					btn.disabled = false;
+					if (formulario.id === 'ventaForm') toggleDireccionGroup(); // Oculta la dirección al limpiar
 				})
 				.catch(error => {
 					console.error('Error!', error.message);
@@ -237,8 +240,10 @@
 				});
 		}
 
+		// 4. Conectar los botones con las funciones
 		tabVenta.addEventListener('click', () => activarTab('venta'));
 		tabGasto.addEventListener('click', () => activarTab('gasto'));
+		entregaSelect.addEventListener('change', toggleDireccionGroup);
 
 		ventaForm.addEventListener('submit', e => {
 			e.preventDefault();
@@ -250,6 +255,7 @@
 			enviarFormulario(gastoForm, 'Registrar Gasto', '¡Gasto registrado con éxito!');
 		});
 
+		// Asegurarnos de que inicie oculto al cargar la página
 		toggleDireccionGroup();
 	</script>
 </body>
