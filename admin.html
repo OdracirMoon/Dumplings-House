@@ -187,6 +187,7 @@
 		const entregaSelect = document.getElementById('entrega');
 		const direccionGroup = document.getElementById('direccionGroup');
 		const direccionInput = document.getElementById('direccion');
+		const formFields = document.querySelectorAll('input, select');
 
 		// 1. Función para cambiar entre Ventas y Gastos
 		function activarTab(tipo) {
@@ -227,6 +228,7 @@
 			fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
 				.then(() => {
 					alert(alertaExito);
+					localStorage.clear();
 					formulario.reset();
 					btn.innerHTML = textoBotonOriginal;
 					btn.disabled = false;
@@ -240,10 +242,31 @@
 				});
 		}
 
+		function saveFieldValue(event) {
+			const target = event.target;
+			if (!target.id) return;
+			localStorage.setItem(target.id, target.value);
+		}
+
+		function restoreFormData() {
+			formFields.forEach(field => {
+				if (!field.id) return;
+				const saved = localStorage.getItem(field.id);
+				if (saved !== null) {
+					field.value = saved;
+				}
+			});
+			toggleDireccionGroup();
+		}
+
 		// 4. Conectar los botones con las funciones
 		tabVenta.addEventListener('click', () => activarTab('venta'));
 		tabGasto.addEventListener('click', () => activarTab('gasto'));
 		entregaSelect.addEventListener('change', toggleDireccionGroup);
+		formFields.forEach(field => {
+			field.addEventListener('input', saveFieldValue);
+			field.addEventListener('change', saveFieldValue);
+		});
 
 		ventaForm.addEventListener('submit', e => {
 			e.preventDefault();
@@ -255,8 +278,7 @@
 			enviarFormulario(gastoForm, 'Registrar Gasto', '¡Gasto registrado con éxito!');
 		});
 
-		// Asegurarnos de que inicie oculto al cargar la página
-		toggleDireccionGroup();
+	restoreFormData();
 	</script>
 </body>
 </html>
