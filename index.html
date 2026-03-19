@@ -23,6 +23,15 @@
             text-align: center;
             padding: 2rem 1rem 1rem 1rem;
         }
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
         header h1 {
             color: var(--main-red);
             font-size: 2.2rem;
@@ -208,6 +217,14 @@
             margin-top: 2rem;
             font-size: 1rem;
         }
+        .footer {
+            background: #fff;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            border-top: 1px solid #eee;
+        }
         @media (max-width: 600px) {
             .menu-section {
                 padding: 0.5rem;
@@ -223,8 +240,11 @@
 </head>
 <body>
     <header>
-        <h1>Dumplings en Casa</h1>
-        <p>Auténtico sabor asiático, listos para disfrutar</p>
+        <div class="header-content">
+            <img src="logo.png" alt="Logo Dumplings Caseros" class="logo">
+            <h1>Dumplings en Casa</h1>
+            <p>Auténtico sabor asiático, listos para disfrutar</p>
+        </div>
     </header>
     <section class="menu-section">
         <div class="card">
@@ -303,13 +323,13 @@
         </div>
     </div>
 
-    <footer>
-        <strong>Horarios:</strong> Lunes a Sábado, 2:00 pm - 8:00 pm<br>
-        <strong>Envíos:</strong> Recoger en casa o a domicilio (zona centro y sur)
-    </footer>
+    <div class="footer">
+        <p>📍 <strong>Nuestra Ubicación:</strong> Avenida Sexta Nte #1207, Colonia Pedregal 3 (Solo para recoger)</p>
+        <p>🕒 Horario: Lun-Sáb 2:00 PM - 8:00 PM</p>
+    </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbynbgm1idLOdC8Ze6M7QXZ2DyJCmhPMrOdSkoFmK1_qZaPOvqZUrSJY_pVHL9JGBRV4cA/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw5bKXZwCLtNJ94yZXnFKshp_eDW3AD9MP5j-bvLgafhFTJEUFap8hw_Ffgt-dQXW_J1g/exec';
         const whatsappNumber = '526391108546';
         const modal = document.getElementById('pedidoModal');
         const pedidoForm = document.getElementById('pedidoForm');
