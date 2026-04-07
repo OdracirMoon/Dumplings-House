@@ -113,25 +113,26 @@
 
 		<form id="ventaForm" autocomplete="off">
 			<input type="hidden" name="tipoFormulario" value="venta">
-			<label for="cliente">Nombre del Cliente</label>
-			<input type="text" id="cliente" name="cliente" required placeholder="Ej: Juan Pérez">
+			<label for="cliente">Nombre del Cliente (Opcional)</label>
+			<input type="text" id="cliente" name="cliente" placeholder="Ej: Juan Pérez">
 
-			<label for="paquete">Paquete</label>
-			<select id="paquete" name="paquete" required>
-				<option value="">Selecciona...</option>
-				<option value="6 piezas">6 piezas</option>
-				<option value="8 piezas">8 piezas</option>
-				<option value="12 piezas">12 piezas</option>
-			</select>
+			<div style="display: flex; gap: 1rem; margin-bottom: 1.2rem;">
+				<div style="flex: 1;">
+					<label for="cant6" style="font-size: 0.9rem;">Paqu. 6pz</label>
+					<input type="number" id="cant6" name="cant6" min="0" value="0" style="margin-bottom: 0;">
+				</div>
+				<div style="flex: 1;">
+					<label for="cant8" style="font-size: 0.9rem;">Paqu. 8pz</label>
+					<input type="number" id="cant8" name="cant8" min="0" value="0" style="margin-bottom: 0;">
+				</div>
+				<div style="flex: 1;">
+					<label for="cant12" style="font-size: 0.9rem;">Paqu. 12pz</label>
+					<input type="number" id="cant12" name="cant12" min="0" value="0" style="margin-bottom: 0;">
+				</div>
+			</div>
 
-			<label for="cantidad">Cantidad</label>
-			<input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
-
-			<label for="salsaAjonjoli">Salsas Ajonjolí extra</label>
-			<input type="number" id="salsaAjonjoli" name="salsaAjonjoli" min="0" value="0" required>
-
-			<label for="salsaMacha">Salsas Macha extra</label>
-			<input type="number" id="salsaMacha" name="salsaMacha" min="0" value="0" required>
+			<label for="salsasExtra">Salsas Extra (Total)</label>
+			<input type="number" id="salsasExtra" name="salsasExtra" min="0" value="0">
 
 			<label for="entrega">Tipo de Entrega</label>
 			<select id="entrega" name="entrega" required>
@@ -224,10 +225,8 @@
 			const esDomicilio = entregaSelect.value === 'A domicilio';
 			if (esDomicilio) {
 				direccionGroup.classList.remove('hidden');
-				direccionInput.required = true;
 			} else {
 				direccionGroup.classList.add('hidden');
-				direccionInput.required = false;
 				direccionInput.value = '';
 			}
 		}
